@@ -16,10 +16,10 @@ class _HomePresentationState extends State<HomePresentation> {
   final MqttRepository _mqttRepo = inject<MqttRepository>();
 
   final TextEditingController _topicCtrl = TextEditingController(
-    text: 'test/topic',
+    text: 'flutter_chat/response',
   );
   final TextEditingController _messageCtrl = TextEditingController(
-    text: 'Olá MQTT!',
+    text: 'Olá, essa é minha primeira mensagem!',
   );
 
   @override
@@ -35,35 +35,64 @@ class _HomePresentationState extends State<HomePresentation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Home presentation'),
-            Expanded(
-              child: ValueListenableBuilder<List<String>>(
-                valueListenable: _mqttRepo.messages,
-                builder: (context, messages, _) {
-                  if (messages.isEmpty) {
-                    return Center(
-                      child: Text('Nenhuma mensagem recebida ainda.'),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(messages[index]),
-                        dense: true,
-                      );
-                    },
-                  );
-                },
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.all(8),
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Flutter Realtime - MQTT'),
+              TextField(
+                controller: _topicCtrl,
+                decoration: InputDecoration(labelText: 'Tópico'),
               ),
-            ),
-          ],
+              TextField(
+                controller: _messageCtrl,
+                decoration: InputDecoration(labelText: 'Mensagem'),
+              ),
+              SizedBox(height: 12),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      final topic = _topicCtrl.text;
+                      final msg = _messageCtrl.text;
+                      _mqttRepo.publish(topic, {'message': msg});
+                    },
+                    child: Text('Publicar'),
+                  ),
+                  SizedBox(width: 8),
+                  ElevatedButton(
+                    onPressed: () => _mqttRepo.clearMessages(),
+                    child: Text('Limpar mensagens'),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: ValueListenableBuilder<List<String>>(
+                  valueListenable: _mqttRepo.messages,
+                  builder: (context, messages, _) {
+                    if (messages.isEmpty) {
+                      return Center(
+                        child: Text('Nenhuma mensagem recebida ainda.'),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(messages[index]),
+                          dense: true,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

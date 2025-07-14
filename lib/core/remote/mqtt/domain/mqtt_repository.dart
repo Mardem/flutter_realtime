@@ -16,5 +16,7 @@ abstract class MqttRepository {
 
   void disconnect();
 
+  void clearMessages();
+
   ValueNotifier<List<String>> get messages;
 }

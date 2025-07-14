@@ -54,9 +54,13 @@ class MqttService implements MqttRepository {
     Map<String, dynamic> jsonMap, {
     MqttQos qos = MqttQos.atLeastOnce,
   }) {
-    final payload = MqttClientPayloadBuilder();
-    payload.addString(json.encode(jsonMap));
-    _client.publishMessage(topic, qos, payload.payload!);
+    final jsonString = json.encode(jsonMap);
+    final builder = MqttClientPayloadBuilder();
+
+    builder.addUTF8String(jsonString);
+
+    _client.publishMessage(topic, qos, builder.payload!);
+    print('Publicado JSON em $topic: $jsonString');
   }
 
   @override
@@ -75,16 +79,22 @@ class MqttService implements MqttRepository {
     _client.disconnect();
   }
 
+  @override
+  void clearMessages() => _messageList.value = [];
+
   void _onMessage(List<MqttReceivedMessage<MqttMessage>> event) {
     final recMess = event[0].payload as MqttPublishMessage;
+
     final message = MqttPublishPayload.bytesToStringAsString(
       recMess.payload.message,
     );
+
     final topic = event[0].topic;
     final formattedMessage = '[$topic] $message';
 
     final updated = List<String>.from(_messageList.value);
     updated.insert(0, formattedMessage);
+
     _messageList.value = updated;
   }
 
