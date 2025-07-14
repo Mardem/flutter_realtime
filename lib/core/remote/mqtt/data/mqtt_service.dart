@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
@@ -13,6 +14,8 @@ class MqttService implements MqttRepository {
   final String server;
   final int port;
   final String clientIdentifier;
+
+  final ValueNotifier<List<String>> _messageList = ValueNotifier([]);
 
   MqttService({
     required this.server,
@@ -38,6 +41,7 @@ class MqttService implements MqttRepository {
 
     try {
       await _client.connect();
+      _client.updates?.listen(_onMessage);
     } catch (e) {
       _client.disconnect();
       rethrow;
@@ -71,9 +75,25 @@ class MqttService implements MqttRepository {
     _client.disconnect();
   }
 
+  void _onMessage(List<MqttReceivedMessage<MqttMessage>> event) {
+    final recMess = event[0].payload as MqttPublishMessage;
+    final message = MqttPublishPayload.bytesToStringAsString(
+      recMess.payload.message,
+    );
+    final topic = event[0].topic;
+    final formattedMessage = '[$topic] $message';
+
+    final updated = List<String>.from(_messageList.value);
+    updated.insert(0, formattedMessage);
+    _messageList.value = updated;
+  }
+
   void _onSubscribed(String topic) => print('Inscrito em $topic');
 
   void _onDisconnected() => print('Desconectado do broker');
 
   void _onConnected() => print('Conectado ao broker');
+
+  @override
+  ValueNotifier<List<String>> get messages => _messageList;
 }

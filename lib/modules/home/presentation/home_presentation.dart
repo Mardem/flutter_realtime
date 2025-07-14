@@ -1,7 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_realtime/main.dart';
 
-class HomePresentation extends StatelessWidget {
+import '../../../core/remote/mqtt/domain/mqtt_repository.dart';
+
+class HomePresentation extends StatefulWidget {
   const HomePresentation({super.key});
+
+  @override
+  State<HomePresentation> createState() => _HomePresentationState();
+}
+
+class _HomePresentationState extends State<HomePresentation> {
+  final String _mqttTopic = 'flutter_chat/response';
+
+  final MqttRepository _mqttRepo = inject<MqttRepository>();
+
+  final TextEditingController _topicCtrl = TextEditingController(
+    text: 'test/topic',
+  );
+  final TextEditingController _messageCtrl = TextEditingController(
+    text: 'Olá MQTT!',
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _initMqttClient();
+  }
+
+  Future<void> _initMqttClient() async {
+    await _mqttRepo.initialize().then((_) => _mqttRepo.subscribe(_mqttTopic));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +40,30 @@ class HomePresentation extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('Home presentation')],
+          children: [
+            Text('Home presentation'),
+            Expanded(
+              child: ValueListenableBuilder<List<String>>(
+                valueListenable: _mqttRepo.messages,
+                builder: (context, messages, _) {
+                  if (messages.isEmpty) {
+                    return Center(
+                      child: Text('Nenhuma mensagem recebida ainda.'),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(messages[index]),
+                        dense: true,
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
