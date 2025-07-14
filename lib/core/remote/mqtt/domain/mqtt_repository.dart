@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 
 abstract class MqttRepository {
@@ -14,4 +15,8 @@ abstract class MqttRepository {
   void unsubscribe(String topic);
 
   void disconnect();
+
+  void clearMessages();
+
+  ValueNotifier<List<String>> get messages;
 }
