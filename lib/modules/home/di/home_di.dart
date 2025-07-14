@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 
 import '../../../core/core.dart';
+import '../../../core/remote/mqtt/di/mqtt_factory.dart';
+import '../../../core/remote/mqtt/domain/mqtt_repository.dart';
 import '../../../main.dart';
 
 class HomeDI extends BaseServiceLocator {
@@ -8,7 +10,15 @@ class HomeDI extends BaseServiceLocator {
   GetIt locator = inject;
 
   @override
-  Future<void> setServices() async {}
+  Future<void> setServices() async {
+    inject.registerFactory<MqttRepository>(
+      () => MqttFactory.create(
+        server: 'test.mosquitto.org',
+        clientIdentifier:
+            'flutter_client_${DateTime.now().millisecondsSinceEpoch}',
+      ),
+    );
+  }
 
   @override
   Future<void> setRepositories() async {}
