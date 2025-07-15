@@ -24,6 +24,9 @@ class MqttService implements MqttRepository {
   });
 
   @override
+  ValueNotifier<List<String>> get messages => _messageList;
+
+  @override
   Future<void> initialize() async {
     _client = MqttServerClient(server, clientIdentifier)
       ..port = port
@@ -103,7 +106,4 @@ class MqttService implements MqttRepository {
   void _onDisconnected() => print('Desconectado do broker');
 
   void _onConnected() => print('Conectado ao broker');
-
-  @override
-  ValueNotifier<List<String>> get messages => _messageList;
 }
