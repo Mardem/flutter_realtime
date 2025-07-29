@@ -26,6 +26,9 @@ class MqttService implements MqttRepository {
   @override
   ValueNotifier<List<String>> get messages => _messageList;
 
+  @visibleForTesting
+  set testClient(MqttServerClient client) => _client = client;
+
   @override
   Future<void> initialize() async {
     _client = MqttServerClient(server, clientIdentifier)
