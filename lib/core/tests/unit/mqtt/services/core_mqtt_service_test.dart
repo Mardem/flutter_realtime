@@ -9,7 +9,7 @@ void main() {
   late MqttService service;
   late MockMqttClient mockClient;
 
-  group('Testing Core MqttService With Success', () {
+  group('MqttService – successful cases', () {
     setUpAll(() {
       mockClient = MockMqttClient();
 
