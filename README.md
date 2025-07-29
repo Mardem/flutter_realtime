@@ -38,22 +38,29 @@ docker run -it -p 1883:1883 eclipse-mosquitto
 ```
 lib/
 ├── main.dart             # Entry point
-├── mqtt_service.dart     # Serviço de conexão com MQTT
+├── app.dart              # Widget raiz da aplicação
+├── startup/              # Inicialização do app (injeção de dependência, configurações iniciais)
+│   ├── di.dart           # Setup de dependências iniciais
+├── core/                 # Camada de recursos compartilhados
+│   ├── core.dart         # Exports principais da camada core
+│   ├── di/               # Injeção de dependência para core
+│   └── remote/           # Fontes de dados remotas (ex: APIs, MQTT)
+├── modules/              # Módulos da aplicação
+│   └── home/             # Módulo home
+│       ├── di/           # Injeção de dependência do módulo home
+│       └── presentation/ # Tela e lógica para apresentação
+
 ```
 
 ## 🗺️ Roadmap
 
 - [x] Estrutura inicial do app
-- [ ] Publicação e assinatura de tópicos
-- [ ] Interface para visualização de mensagens em tempo real
-- [ ] Histórico de mensagens
-- [ ] Reconexão automática
+- [x] Publicação e assinatura de tópicos
+- [x] Interface para visualização de mensagens em tempo real
+- [x] Histórico de mensagens
+- [x] Reconexão automática
 
 ## 🤝 Contribuindo
 
 Pull requests são bem-vindos! Para grandes mudanças, por favor abra uma issue antes para discutir o
 que deseja modificar.
-
-## 📄 Licença
-
-[MIT](LICENSE)
