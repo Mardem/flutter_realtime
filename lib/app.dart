@@ -1,6 +1,10 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_realtime/startup/router.dart';
 
-import 'modules/home/presentation/home_presentation.dart';
+import 'core/routes/domain/application.dart';
+
+import 'modules/onboarding/routes/onboarding_route_names.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -12,12 +16,20 @@ class App extends StatefulWidget {
 }
 
 class AppState extends State<App> {
+
+  AppState() {
+    final router = FluroRouter();
+    AppRouter.defineRouter(router);
+    Application.router = router;
+  }
+
   @override
   Widget build(BuildContext context) {
     final app = MaterialApp(
       title: 'Flutter Realtime',
       debugShowCheckedModeBanner: false,
-      home: HomePresentation(),
+      onGenerateRoute: Application.router.generator,
+      initialRoute: OnboardingRouteNames.splash.path,
     );
     return app;
   }
