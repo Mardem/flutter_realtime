@@ -25,6 +25,9 @@ main() async {
   // antes de executar qualquer código assíncrono.
   WidgetsFlutterBinding.ensureInitialized();
   await InitAppModules.start();
-  
-  initializeDateFormatting('pt_BR', null).then((_) => runApp(const App()));
+
+  initializeDateFormatting(
+    'pt_BR',
+    null,
+  ).then((_) => runApp(const App()));
 }

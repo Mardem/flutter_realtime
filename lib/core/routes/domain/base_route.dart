@@ -1,7 +1,5 @@
 class BaseRoute<T> {
-  BaseRoute({
-    required this.handler,
-  });
+  BaseRoute({required this.handler});
 
   final T handler;
 }

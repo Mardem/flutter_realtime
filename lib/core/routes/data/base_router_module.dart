@@ -3,18 +3,30 @@ import 'package:flutter/widgets.dart';
 
 import '../routes.dart';
 
-abstract class BaseRouterModule implements RoutesInterface {
+abstract class BaseRouterModule
+    implements RoutesInterface {
   @override
-  BaseRoute<Handler> call() => BaseRoute(
+  BaseRoute<Handler> call() =>
+      BaseRoute(
         handler: Handler(
-          handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-            return getPresentation(params: params);
-          },
+          handlerFunc:
+              (
+                BuildContext? context,
+                Map<String, dynamic>
+                params,
+              ) {
+                return getPresentation(
+                  params: params,
+                );
+              },
         ),
       );
 
   @override
-  define(FluroRouter router, {TransitionType? transitionType}) {
+  define(
+    FluroRouter router, {
+    TransitionType? transitionType,
+  }) {
     router.define(
       getRoutePath(),
       handler: call().handler,
@@ -22,7 +34,9 @@ abstract class BaseRouterModule implements RoutesInterface {
     );
   }
 
-  Widget getPresentation({Map<String, dynamic>? params});
+  Widget getPresentation({
+    Map<String, dynamic>? params,
+  });
 
   String getRoutePath();
 }

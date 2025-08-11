@@ -39,6 +39,7 @@ dependencies:
   mqtt_client: 10.10.0
   mocktail: 1.0.4
   fluro: 2.0.5
+  getwidget: 6.0.0
 
 dev_dependencies:
   flutter_test:

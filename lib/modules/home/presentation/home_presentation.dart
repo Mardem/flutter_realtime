@@ -3,23 +3,32 @@ import 'package:flutter_realtime/main.dart';
 
 import '../../../core/remote/mqtt/domain/mqtt_repository.dart';
 
-class HomePresentation extends StatefulWidget {
+class HomePresentation
+    extends StatefulWidget {
   const HomePresentation({super.key});
 
   @override
-  State<HomePresentation> createState() => _HomePresentationState();
+  State<HomePresentation>
+  createState() =>
+      _HomePresentationState();
 }
 
-class _HomePresentationState extends State<HomePresentation> {
-  final String _mqttTopic = 'flutter_chat/response';
+class _HomePresentationState
+    extends State<HomePresentation> {
+  final String _mqttTopic =
+      'flutter_chat/response';
 
-  final MqttRepository _mqttRepo = inject<MqttRepository>();
+  final MqttRepository _mqttRepo =
+      inject<MqttRepository>();
 
-  final TextEditingController _topicCtrl = TextEditingController(
+  final TextEditingController
+  _topicCtrl = TextEditingController(
     text: 'flutter_chat/response',
   );
-  final TextEditingController _messageCtrl = TextEditingController(
-    text: 'Olá, essa é minha primeira mensagem!',
+  final TextEditingController
+  _messageCtrl = TextEditingController(
+    text:
+        'Olá, essa é minha primeira mensagem!',
   );
 
   @override
@@ -29,7 +38,11 @@ class _HomePresentationState extends State<HomePresentation> {
   }
 
   Future<void> _initMqttClient() async {
-    await _mqttRepo.initialize().then((_) => _mqttRepo.subscribe(_mqttTopic));
+    await _mqttRepo.initialize().then(
+      (_) => _mqttRepo.subscribe(
+        _mqttTopic,
+      ),
+    );
   }
 
   @override
@@ -38,55 +51,102 @@ class _HomePresentationState extends State<HomePresentation> {
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.all(8),
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.of(
+            context,
+          ).size.width,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment:
+                CrossAxisAlignment
+                    .center,
+            mainAxisAlignment:
+                MainAxisAlignment
+                    .center,
             children: [
-              Text('Flutter Realtime - MQTT'),
-              TextField(
-                controller: _topicCtrl,
-                decoration: InputDecoration(labelText: 'Tópico'),
+              Text(
+                'Flutter Realtime - MQTT',
               ),
               TextField(
-                controller: _messageCtrl,
-                decoration: InputDecoration(labelText: 'Mensagem'),
+                controller: _topicCtrl,
+                decoration:
+                    InputDecoration(
+                      labelText:
+                          'Tópico',
+                    ),
+              ),
+              TextField(
+                controller:
+                    _messageCtrl,
+                decoration:
+                    InputDecoration(
+                      labelText:
+                          'Mensagem',
+                    ),
               ),
               SizedBox(height: 12),
               Row(
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      final topic = _topicCtrl.text;
-                      final msg = _messageCtrl.text;
-                      _mqttRepo.publish(topic, {'message': msg});
+                      final topic =
+                          _topicCtrl
+                              .text;
+                      final msg =
+                          _messageCtrl
+                              .text;
+                      _mqttRepo.publish(
+                        topic,
+                        {
+                          'message':
+                              msg,
+                        },
+                      );
                     },
-                    child: Text('Publicar'),
+                    child: Text(
+                      'Publicar',
+                    ),
                   ),
                   SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: () => _mqttRepo.clearMessages(),
-                    child: Text('Limpar mensagens'),
+                    onPressed: () =>
+                        _mqttRepo
+                            .clearMessages(),
+                    child: Text(
+                      'Limpar mensagens',
+                    ),
                   ),
                 ],
               ),
               Expanded(
                 child: ValueListenableBuilder<List<String>>(
-                  valueListenable: _mqttRepo.messages,
+                  valueListenable:
+                      _mqttRepo
+                          .messages,
                   builder: (context, messages, _) {
-                    if (messages.isEmpty) {
+                    if (messages
+                        .isEmpty) {
                       return Center(
-                        child: Text('Nenhuma mensagem recebida ainda.'),
+                        child: Text(
+                          'Nenhuma mensagem recebida ainda.',
+                        ),
                       );
                     }
                     return ListView.builder(
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(messages[index]),
-                          dense: true,
-                        );
-                      },
+                      itemCount:
+                          messages
+                              .length,
+                      itemBuilder:
+                          (
+                            context,
+                            index,
+                          ) {
+                            return ListTile(
+                              title: Text(
+                                messages[index],
+                              ),
+                              dense:
+                                  true,
+                            );
+                          },
                     );
                   },
                 ),

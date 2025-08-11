@@ -16,7 +16,6 @@ class App extends StatefulWidget {
 }
 
 class AppState extends State<App> {
-
   AppState() {
     final router = FluroRouter();
     AppRouter.defineRouter(router);
@@ -28,8 +27,11 @@ class AppState extends State<App> {
     final app = MaterialApp(
       title: 'Flutter Realtime',
       debugShowCheckedModeBanner: false,
-      onGenerateRoute: Application.router.generator,
-      initialRoute: OnboardingRouteNames.splash.path,
+      onGenerateRoute:
+          Application.router.generator,
+      initialRoute: OnboardingRouteNames
+          .splash
+          .path,
     );
     return app;
   }

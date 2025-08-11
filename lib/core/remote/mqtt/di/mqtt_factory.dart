@@ -4,7 +4,9 @@ import '../domain/mqtt_repository.dart';
 class MqttFactory {
   static MqttRepository? _custom;
 
-  static void register(MqttRepository repo) {
+  static void register(
+    MqttRepository repo,
+  ) {
     _custom = repo;
   }
 
@@ -16,7 +18,8 @@ class MqttFactory {
     return _custom ??
         MqttService(
           server: server,
-          clientIdentifier: clientIdentifier,
+          clientIdentifier:
+              clientIdentifier,
           port: port,
         );
   }

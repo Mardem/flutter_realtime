@@ -10,7 +10,10 @@ abstract class MqttRepository {
     MqttQos qos = MqttQos.atLeastOnce,
   });
 
-  void subscribe(String topic, {MqttQos qos = MqttQos.atMostOnce});
+  void subscribe(
+    String topic, {
+    MqttQos qos = MqttQos.atMostOnce,
+  });
 
   void unsubscribe(String topic);
 
@@ -18,5 +21,6 @@ abstract class MqttRepository {
 
   void clearMessages();
 
-  ValueNotifier<List<String>> get messages;
+  ValueNotifier<List<String>>
+  get messages;
 }

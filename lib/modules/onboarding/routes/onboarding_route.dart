@@ -4,15 +4,20 @@ import 'package:flutter_realtime/modules/onboarding/routes/onboarding_route_name
 
 import '../../../core/routes/routes.dart';
 
-/// Classe responsável por configurar as rotas do módulo de Login.
-class OnboardingRoute extends BaseRouterModule {
+/// Classe responsável por configurar as rotas do módulo de Onboarding.
+class OnboardingRoute
+    extends BaseRouterModule {
   @override
-  Widget getPresentation({Map<String, dynamic>? params}) {
+  Widget getPresentation({
+    Map<String, dynamic>? params,
+  }) {
     return const OnboardingPresentation();
   }
 
   @override
   String getRoutePath() {
-    return OnboardingRouteNames.splash.path;
+    return OnboardingRouteNames
+        .splash
+        .path;
   }
 }
