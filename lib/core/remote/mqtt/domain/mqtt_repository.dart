@@ -10,7 +10,10 @@ abstract class MqttRepository {
     MqttQos qos = MqttQos.atLeastOnce,
   });
 
-  void subscribe(String topic, {MqttQos qos = MqttQos.atMostOnce});
+  void subscribe(
+    String topic, {
+    MqttQos qos = MqttQos.atMostOnce,
+  });
 
   void unsubscribe(String topic);
 

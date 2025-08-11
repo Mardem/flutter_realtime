@@ -9,33 +9,44 @@ void main() {
   late MqttService service;
   late MockMqttClient mockClient;
 
-  group('MqttService – successful cases', () {
-    setUpAll(() {
-      mockClient = MockMqttClient();
+  group(
+    'MqttService – successful cases',
+    () {
+      setUpAll(() {
+        mockClient = MockMqttClient();
 
-      service = MqttService(
-        server: 'test.mosquitto.org',
-        clientIdentifier: 'test-client',
+        service = MqttService(
+          server: 'test.mosquitto.org',
+          clientIdentifier: 'test-client',
+        );
+
+        service.testClient = mockClient;
+      });
+
+      test(
+        'Given mqtt client, When call subscribe, Then call mqtt subscribe',
+        () {
+          // Arrange
+          const topic = 'chat/test';
+          when(
+            () => mockClient.subscribe(
+              topic,
+              MqttQos.atMostOnce,
+            ),
+          ).thenReturn(null);
+
+          // Act
+          service.subscribe(topic);
+
+          // Assert
+          verify(
+            () => mockClient.subscribe(
+              topic,
+              MqttQos.atMostOnce,
+            ),
+          ).called(1);
+        },
       );
-
-      service.testClient = mockClient;
-    });
-
-    test(
-      'Given mqtt client, When call subscribe, Then call mqtt subscribe',
-      () {
-        // Arrange
-        const topic = 'chat/test';
-        when(
-          () => mockClient.subscribe(topic, MqttQos.atMostOnce),
-        ).thenReturn(null);
-
-        // Act
-        service.subscribe(topic);
-
-        // Assert
-        verify(() => mockClient.subscribe(topic, MqttQos.atMostOnce)).called(1);
-      },
-    );
-  });
+    },
+  );
 }
