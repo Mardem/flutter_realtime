@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_realtime/design_system/app_bar/app_bar.dart';
-
+import 'package:flutter_realtime/modules/http_requests/routes/http_requests_route_names.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 
 import '../../../main.dart';
@@ -45,6 +45,10 @@ class _OnboardingPresentationState extends State<OnboardingPresentation> {
             titleText: 'HTTP Requests',
             subTitleText:
                 'Ao acessar esta tela você poderá ver a integração com HTTP funcionando',
+            onTap: () => router.navigateTo(
+              context,
+              HttpRequestsRouteNames.home.path,
+            ),
           ),
         ],
       ),
