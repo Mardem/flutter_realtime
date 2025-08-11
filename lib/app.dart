@@ -26,12 +26,22 @@ class AppState extends State<App> {
   Widget build(BuildContext context) {
     final app = MaterialApp(
       title: 'Flutter Realtime',
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromRGBO(40, 44, 52, 1),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       debugShowCheckedModeBanner: false,
-      onGenerateRoute:
-          Application.router.generator,
-      initialRoute: OnboardingRouteNames
-          .splash
-          .path,
+      onGenerateRoute: Application.router.generator,
+      initialRoute: OnboardingRouteNames.splash.path,
     );
     return app;
   }

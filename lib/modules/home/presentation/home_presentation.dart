@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_realtime/design_system/card/app_card.dart';
 import 'package:flutter_realtime/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/remote/mqtt/domain/mqtt_repository.dart';
+import '../../../design_system/app_bar/app_bar.dart';
 
-class HomePresentation
-    extends StatefulWidget {
+class HomePresentation extends StatefulWidget {
   const HomePresentation({super.key});
 
   @override
-  State<HomePresentation>
-  createState() =>
-      _HomePresentationState();
+  State<HomePresentation> createState() => _HomePresentationState();
 }
 
-class _HomePresentationState
-    extends State<HomePresentation> {
-  final String _mqttTopic =
-      'flutter_chat/response';
+class _HomePresentationState extends State<HomePresentation> {
+  final String _mqttTopic = 'flutter_chat/response';
 
-  final MqttRepository _mqttRepo =
-      inject<MqttRepository>();
+  final MqttRepository _mqttRepo = inject<MqttRepository>();
 
-  final TextEditingController
-  _topicCtrl = TextEditingController(
+  final TextEditingController _topicCtrl = TextEditingController(
     text: 'flutter_chat/response',
   );
-  final TextEditingController
-  _messageCtrl = TextEditingController(
-    text:
-        'Olá, essa é minha primeira mensagem!',
+  final TextEditingController _messageCtrl = TextEditingController(
+    text: 'Olá, essa é minha primeira mensagem!',
   );
+
+  final String postUrl =
+      'https://medium.com/@mardenmc22/desenvolvimento-mobile-com-flutter-e-mqtt-o-guia-para-criar-aplicativos-inovadores-ad4f207203d1';
 
   @override
   void initState() {
@@ -48,6 +45,7 @@ class _HomePresentationState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: DefaultAppBar(title: 'Flutter MQTT ⚡'),
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.all(8),
@@ -55,49 +53,37 @@ class _HomePresentationState
             context,
           ).size.width,
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment
-                    .center,
-            mainAxisAlignment:
-                MainAxisAlignment
-                    .center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Flutter Realtime - MQTT',
+              AppCard(
+                title: 'Flutter com MVVM e MQTT',
+                description: _screenDescription(),
+                onTap: () => _launchUrl(postUrl),
               ),
               TextField(
                 controller: _topicCtrl,
-                decoration:
-                    InputDecoration(
-                      labelText:
-                          'Tópico',
-                    ),
+                decoration: InputDecoration(
+                  labelText: 'Tópico',
+                ),
               ),
               TextField(
-                controller:
-                    _messageCtrl,
-                decoration:
-                    InputDecoration(
-                      labelText:
-                          'Mensagem',
-                    ),
+                controller: _messageCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Mensagem',
+                ),
               ),
               SizedBox(height: 12),
               Row(
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      final topic =
-                          _topicCtrl
-                              .text;
-                      final msg =
-                          _messageCtrl
-                              .text;
+                      final topic = _topicCtrl.text;
+                      final msg = _messageCtrl.text;
                       _mqttRepo.publish(
                         topic,
                         {
-                          'message':
-                              msg,
+                          'message': msg,
                         },
                       );
                     },
@@ -107,9 +93,7 @@ class _HomePresentationState
                   ),
                   SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: () =>
-                        _mqttRepo
-                            .clearMessages(),
+                    onPressed: () => _mqttRepo.clearMessages(),
                     child: Text(
                       'Limpar mensagens',
                     ),
@@ -118,12 +102,9 @@ class _HomePresentationState
               ),
               Expanded(
                 child: ValueListenableBuilder<List<String>>(
-                  valueListenable:
-                      _mqttRepo
-                          .messages,
+                  valueListenable: _mqttRepo.messages,
                   builder: (context, messages, _) {
-                    if (messages
-                        .isEmpty) {
+                    if (messages.isEmpty) {
                       return Center(
                         child: Text(
                           'Nenhuma mensagem recebida ainda.',
@@ -131,9 +112,7 @@ class _HomePresentationState
                       );
                     }
                     return ListView.builder(
-                      itemCount:
-                          messages
-                              .length,
+                      itemCount: messages.length,
                       itemBuilder:
                           (
                             context,
@@ -143,8 +122,7 @@ class _HomePresentationState
                               title: Text(
                                 messages[index],
                               ),
-                              dense:
-                                  true,
+                              dense: true,
                             );
                           },
                     );
@@ -156,5 +134,19 @@ class _HomePresentationState
         ),
       ),
     );
+  }
+
+  String _screenDescription() => """
+Aqui você encontra um resumo prático do conteúdo apresentado no artigo:
+como integrar MVVM com MQTT no Flutter, garantindo uma arquitetura limpa, comunicação em tempo real e um código escalável e fácil de manter.
+  """;
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    final ok = await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
+    if (!ok) throw Exception('Could not launch $uri');
   }
 }

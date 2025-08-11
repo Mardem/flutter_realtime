@@ -5,16 +5,13 @@ import '../../../core/remote/mqtt/di/mqtt_factory.dart';
 import '../../../core/remote/mqtt/domain/mqtt_repository.dart';
 import '../../../main.dart';
 
-class HomeDI
-    extends BaseServiceLocator {
+class HomeDI extends BaseServiceLocator {
   @override
   GetIt locator = inject;
 
   @override
   Future<void> setServices() async {
-    inject.registerFactory<
-      MqttRepository
-    >(
+    inject.registerFactory<MqttRepository>(
       () => MqttFactory.create(
         server: 'test.mosquitto.org',
         clientIdentifier:
@@ -24,8 +21,7 @@ class HomeDI
   }
 
   @override
-  Future<void>
-  setRepositories() async {}
+  Future<void> setRepositories() async {}
 
   @override
   Future<void> setViewModels() async {}

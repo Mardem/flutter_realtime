@@ -17,8 +17,7 @@ void main() {
 
         service = MqttService(
           server: 'test.mosquitto.org',
-          clientIdentifier:
-              'test-client',
+          clientIdentifier: 'test-client',
         );
 
         service.testClient = mockClient;

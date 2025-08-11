@@ -7,9 +7,7 @@ class AppRouter {
   static void defineRouter(
     FluroRouter router,
   ) {
-    const TransitionType
-    transitionType =
-        TransitionType.fadeIn;
+    const TransitionType transitionType = TransitionType.fadeIn;
 
     OnboardingRoute().define(
       router,

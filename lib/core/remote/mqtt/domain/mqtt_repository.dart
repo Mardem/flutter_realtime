@@ -21,6 +21,5 @@ abstract class MqttRepository {
 
   void clearMessages();
 
-  ValueNotifier<List<String>>
-  get messages;
+  ValueNotifier<List<String>> get messages;
 }

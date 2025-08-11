@@ -7,8 +7,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 
 import '../domain/mqtt_repository.dart';
 
-class MqttService
-    implements MqttRepository {
+class MqttService implements MqttRepository {
   late final MqttServerClient _client;
   StreamSubscription? _subscription;
 
@@ -16,8 +15,7 @@ class MqttService
   final int port;
   final String clientIdentifier;
 
-  final ValueNotifier<List<String>>
-  _messageList = ValueNotifier([]);
+  final ValueNotifier<List<String>> _messageList = ValueNotifier([]);
 
   MqttService({
     required this.server,
@@ -26,8 +24,7 @@ class MqttService
   });
 
   @override
-  ValueNotifier<List<String>>
-  get messages => _messageList;
+  ValueNotifier<List<String>> get messages => _messageList;
 
   @visibleForTesting
   set testClient(
@@ -44,21 +41,17 @@ class MqttService
           ..port = port
           ..keepAlivePeriod = 20
           ..logging(on: false)
-          ..onDisconnected =
-              _onDisconnected
+          ..onDisconnected = _onDisconnected
           ..onConnected = _onConnected
-          ..onSubscribed =
-              _onSubscribed;
+          ..onSubscribed = _onSubscribed;
 
-    final connMess =
-        MqttConnectMessage()
-            .withClientIdentifier(
-              clientIdentifier,
-            )
-            .startClean();
+    final connMess = MqttConnectMessage()
+        .withClientIdentifier(
+          clientIdentifier,
+        )
+        .startClean();
 
-    _client.connectionMessage =
-        connMess;
+    _client.connectionMessage = connMess;
 
     try {
       await _client.connect();
@@ -80,8 +73,7 @@ class MqttService
     final jsonString = json.encode(
       jsonMap,
     );
-    final builder =
-        MqttClientPayloadBuilder();
+    final builder = MqttClientPayloadBuilder();
 
     builder.addUTF8String(jsonString);
 
@@ -115,27 +107,19 @@ class MqttService
   }
 
   @override
-  void clearMessages() =>
-      _messageList.value = [];
+  void clearMessages() => _messageList.value = [];
 
   void _onMessage(
-    List<
-      MqttReceivedMessage<MqttMessage>
-    >
-    event,
+    List<MqttReceivedMessage<MqttMessage>> event,
   ) {
-    final recMess =
-        event[0].payload
-            as MqttPublishMessage;
+    final recMess = event[0].payload as MqttPublishMessage;
 
-    final message =
-        MqttPublishPayload.bytesToStringAsString(
-          recMess.payload.message,
-        );
+    final message = MqttPublishPayload.bytesToStringAsString(
+      recMess.payload.message,
+    );
 
     final topic = event[0].topic;
-    final formattedMessage =
-        '[$topic] $message';
+    final formattedMessage = '[$topic] $message';
 
     final updated = List<String>.from(
       _messageList.value,
@@ -145,12 +129,9 @@ class MqttService
     _messageList.value = updated;
   }
 
-  void _onSubscribed(String topic) =>
-      print('Inscrito em $topic');
+  void _onSubscribed(String topic) => print('Inscrito em $topic');
 
-  void _onDisconnected() =>
-      print('Desconectado do broker');
+  void _onDisconnected() => print('Desconectado do broker');
 
-  void _onConnected() =>
-      print('Conectado ao broker');
+  void _onConnected() => print('Conectado ao broker');
 }

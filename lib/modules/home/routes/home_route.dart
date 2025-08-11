@@ -5,8 +5,7 @@ import '../presentation/home_presentation.dart';
 import 'home_route_names.dart';
 
 /// Classe responsável por configurar as rotas do módulo de Login.
-class HomeRoutes
-    extends BaseRouterModule {
+class HomeRoutes extends BaseRouterModule {
   @override
   Widget getPresentation({
     Map<String, dynamic>? params,

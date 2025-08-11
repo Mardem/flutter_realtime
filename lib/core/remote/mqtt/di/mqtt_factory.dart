@@ -18,8 +18,7 @@ class MqttFactory {
     return _custom ??
         MqttService(
           server: server,
-          clientIdentifier:
-              clientIdentifier,
+          clientIdentifier: clientIdentifier,
           port: port,
         );
   }
