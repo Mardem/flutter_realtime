@@ -12,7 +12,9 @@ class HttpRequestsServices implements HttpRequestsServiceInterface {
     required String country,
   }) async {
     try {
-      final String url = 'https://restcountries.com/v3.1/name/$country';
+      final String fields =
+          '?fields=name,languages,flags,area,capital,currencies,timezones,maps';
+      final String url = 'https://restcountries.com/v3.1/name/$country$fields';
 
       final request = await _client.get(url);
       final data = request.data;
