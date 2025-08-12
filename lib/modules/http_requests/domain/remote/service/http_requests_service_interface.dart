@@ -1,5 +1,6 @@
+import '../../../../../core/remote/http/http.dart';
 import '../../../data/remote/response/country_response.dart';
 
 abstract class HttpRequestsServiceInterface {
-  Future<CountryResponse> getCountry({required String country});
+  Future<AppResponse<CountryResponse>> getCountry({required String country});
 }

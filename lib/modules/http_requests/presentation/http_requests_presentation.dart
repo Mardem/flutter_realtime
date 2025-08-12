@@ -64,7 +64,7 @@ class _HttpRequestsPresentationState extends State<HttpRequestsPresentation> {
             ListenableBuilder(
               listenable: vm,
               builder: (context, asyncSnapshot) {
-                if (!vm.isLoading && vm.countryData.isNotEmpty) {
+                if (!vm.isLoading && vm.countryData != null) {
                   return CardCountry(
                     image: 'https://flagcdn.com/w320/jp.png',
                     altImage: "https://goo.gl/maps/NGTLSCSrA8bMrvnX9",
