@@ -7,11 +7,9 @@ class HttpClientImpl implements HttpClient {
   final Dio _client;
 
   final String? baseUrl;
-  final String? apiKey;
 
   HttpClientImpl({
     this.baseUrl,
-    this.apiKey,
   }) : _client = Dio(
          BaseOptions(
            baseUrl: baseUrl ?? '',
