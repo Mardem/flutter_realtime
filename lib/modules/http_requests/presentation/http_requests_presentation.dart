@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../design_system/app_bar/app_bar.dart';
+import '../../../design_system/card/app_card.dart';
 import '../../../main.dart';
 import '../data/remote/response/country_response.dart';
 import '../data/utils/countries_states_helper.dart';
@@ -20,6 +22,9 @@ class HttpRequestsPresentation extends StatefulWidget {
 class _HttpRequestsPresentationState extends State<HttpRequestsPresentation> {
   final vm = inject<HttpRequestsViewModel>();
 
+  final String postUrl =
+      'https://medium.com/@mardenmc22/flutter-dio-integra%C3%A7%C3%A3o-de-apis-com-mvvm-054a68251663';
+
   @override
   void dispose() {
     vm.dispose();
@@ -33,6 +38,11 @@ class _HttpRequestsPresentationState extends State<HttpRequestsPresentation> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            AppCard(
+              title: 'Flutter + Dio: Integração de APIs com MVVM',
+              description: _screenDescription(),
+              onTap: () => _launchUrl(postUrl),
+            ),
             GFSearchBar(
               searchList: _countriesNames(),
               searchQueryBuilder: (query, list) {
@@ -97,6 +107,11 @@ class _HttpRequestsPresentationState extends State<HttpRequestsPresentation> {
     );
   }
 
+  String _screenDescription() => """
+Aqui você encontra um resumo prático do artigo:
+Flutter + Dio: integração de APIs com MVVM, aplicando arquitetura limpa, garantindo escalabilidade e facilitando a manutenção do código.
+""";
+
   List _countriesNames() {
     final countries = CountriesStatesHelper.countries
         .map(
@@ -113,4 +128,13 @@ class _HttpRequestsPresentationState extends State<HttpRequestsPresentation> {
             (Map<String, dynamic> country) => country['name'] == name,
           )
           .first;
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    final ok = await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
+    if (!ok) throw Exception('Could not launch $uri');
+  }
 }
