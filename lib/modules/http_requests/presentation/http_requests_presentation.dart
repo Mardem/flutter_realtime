@@ -80,6 +80,7 @@ class _HttpRequestsPresentationState extends State<HttpRequestsPresentation> {
                     currency: country.currencies
                         .map((Currency item) => item.name)
                         .toList(),
+                    currencySymbol: country.currencies,
                   );
                 }
 

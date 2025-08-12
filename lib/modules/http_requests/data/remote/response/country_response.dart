@@ -53,6 +53,7 @@ class CountryResponse {
   final String googleMapsUrl;
   final String openStreetMapsUrl;
   final List<Currency> currencies;
+  final List<String> timezones;
 
   CountryResponse({
     required this.flagPng,
@@ -67,6 +68,7 @@ class CountryResponse {
     required this.googleMapsUrl,
     required this.openStreetMapsUrl,
     required this.currencies,
+    required this.timezones,
   });
 
   factory CountryResponse.fromJson(Map<String, dynamic> json) {
@@ -89,6 +91,8 @@ class CountryResponse {
               .toList()
         : [];
 
+    final timezones = (json['timezones'] as List?)?.cast<String>() ?? [];
+
     return CountryResponse(
       flagPng: json['flags']?['png'] ?? '',
       flagSvg: json['flags']?['svg'] ?? '',
@@ -104,6 +108,7 @@ class CountryResponse {
       googleMapsUrl: json['maps']?['googleMaps'] ?? '',
       openStreetMapsUrl: json['maps']?['openStreetMaps'] ?? '',
       currencies: currencies,
+      timezones: timezones,
     );
   }
 

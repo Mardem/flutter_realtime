@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/remote/response/country_response.dart';
+
 class CardCountry extends StatelessWidget {
   const CardCountry({
     super.key,
@@ -14,11 +16,13 @@ class CardCountry extends StatelessWidget {
     required this.googleMapsLink,
     required this.openStreetLink,
     required this.currency,
+    required this.currencySymbol,
   });
 
   final String image;
   final String altImage;
   final String countryName;
+  final List<Currency> currencySymbol;
   final List<String> currency;
 
   final String googleMapsLink;
@@ -74,6 +78,12 @@ class CardCountry extends StatelessWidget {
               ),
               Text(
                 '💵 Moeda: ${currency.join(', ')}',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                '💱 Símbolo da moeda: ${currencySymbol.first.symbol}',
                 style: TextStyle(
                   color: Colors.white,
                 ),
