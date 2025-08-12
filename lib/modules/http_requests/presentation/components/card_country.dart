@@ -13,17 +13,21 @@ class CardCountry extends StatelessWidget {
     required this.size,
     required this.googleMapsLink,
     required this.openStreetLink,
+    required this.currency,
   });
 
   final String image;
   final String altImage;
   final String countryName;
-  final List<String> capital;
-  final String language;
-  final double size;
+  final List<String> currency;
 
   final String googleMapsLink;
   final String openStreetLink;
+
+  final List<String> language;
+  final List<String> capital;
+
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -57,13 +61,19 @@ class CardCountry extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '🗣️ Linguas: $language',
+                '🗣️ Linguas: ${language.join(', ')}',
                 style: TextStyle(
                   color: Colors.white,
                 ),
               ),
               Text(
                 '🌍 Tamanho geográfico: $size',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                '💵 Moeda: ${currency.join(', ')}',
                 style: TextStyle(
                   color: Colors.white,
                 ),

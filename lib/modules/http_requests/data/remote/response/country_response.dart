@@ -19,13 +19,35 @@ class Currency {
   }
 }
 
+class NativeName {
+  final String code;
+  final String official;
+  final String common;
+
+  NativeName({
+    required this.code,
+    required this.official,
+    required this.common,
+  });
+
+  factory NativeName.fromEntry(MapEntry<String, dynamic> e) {
+    final v = e.value as Map<String, dynamic>? ?? {};
+    return NativeName(
+      code: e.key,
+      official: v['official'] ?? '',
+      common: v['common'] ?? '',
+    );
+  }
+}
+
 class CountryResponse {
   final String flagPng;
   final String flagSvg;
   final String flagAlt;
   final String nameCommon;
   final String nameOfficial;
-  final String capital;
+  final List<NativeName> nativeNames;
+  final List<String> capitals;
   final List<String> languages;
   final double area;
   final String googleMapsUrl;
@@ -38,7 +60,8 @@ class CountryResponse {
     required this.flagAlt,
     required this.nameCommon,
     required this.nameOfficial,
-    required this.capital,
+    required this.nativeNames,
+    required this.capitals,
     required this.languages,
     required this.area,
     required this.googleMapsUrl,
@@ -52,20 +75,29 @@ class CountryResponse {
         .map((e) => Currency.fromEntry(e))
         .toList();
 
+    final nativeNamesMap =
+        (json['name']?['nativeName'] as Map<String, dynamic>?) ?? {};
+    final nativeNames = nativeNamesMap.entries
+        .map((e) => NativeName.fromEntry(e))
+        .toList();
+
+    final capitals = (json['capital'] as List?)?.cast<String>() ?? [];
+
+    final languages = json['languages'] != null
+        ? (json['languages'] as Map<String, dynamic>).values
+              .map((lang) => lang.toString())
+              .toList()
+        : [];
+
     return CountryResponse(
       flagPng: json['flags']?['png'] ?? '',
       flagSvg: json['flags']?['svg'] ?? '',
       flagAlt: json['flags']?['alt'] ?? '',
       nameCommon: json['name']?['common'] ?? '',
       nameOfficial: json['name']?['official'] ?? '',
-      capital: (json['capital'] != null && json['capital'].isNotEmpty)
-          ? json['capital'][0]
-          : '',
-      languages: json['languages'] != null
-          ? (json['languages'] as Map<String, dynamic>).values
-                .map((lang) => lang.toString())
-                .toList()
-          : [],
+      nativeNames: nativeNames,
+      capitals: capitals,
+      languages: languages as List<String>,
       area: (json['area'] is int)
           ? (json['area'] as int).toDouble()
           : (json['area'] ?? 0.0),
@@ -81,4 +113,7 @@ class CountryResponse {
 
   Currency? get primaryCurrency =>
       currencies.isNotEmpty ? currencies.first : null;
+
+  NativeName? get primaryNativeName =>
+      nativeNames.isNotEmpty ? nativeNames.first : null;
 }

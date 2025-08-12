@@ -3,6 +3,7 @@ import 'package:getwidget/getwidget.dart';
 
 import '../../../design_system/app_bar/app_bar.dart';
 import '../../../main.dart';
+import '../data/remote/response/country_response.dart';
 import '../data/utils/countries_states_helper.dart';
 import '../vm/http_requests_view_model.dart';
 import 'components/card_country.dart';
@@ -65,16 +66,20 @@ class _HttpRequestsPresentationState extends State<HttpRequestsPresentation> {
               listenable: vm,
               builder: (context, asyncSnapshot) {
                 if (!vm.isLoading && vm.countryData != null) {
+                  final CountryResponse country = vm.countryData!;
+
                   return CardCountry(
-                    image: 'https://flagcdn.com/w320/jp.png',
-                    altImage: "https://goo.gl/maps/NGTLSCSrA8bMrvnX9",
-                    countryName: '',
-                    capital: ['Tokio', 'Brazil'],
-                    language: '',
-                    size: 30000,
-                    googleMapsLink: 'https://goo.gl/maps/NGTLSCSrA8bMrvnX9',
-                    openStreetLink:
-                        'https://www.openstreetmap.org/relation/382313',
+                    image: country.flagPng,
+                    altImage: country.flagAlt,
+                    countryName: country.nameOfficial,
+                    capital: country.capitals,
+                    language: country.languages,
+                    size: country.area,
+                    googleMapsLink: country.googleMapsUrl,
+                    openStreetLink: country.openStreetMapsUrl,
+                    currency: country.currencies
+                        .map((Currency item) => item.name)
+                        .toList(),
                   );
                 }
 
