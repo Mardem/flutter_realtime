@@ -39,11 +39,12 @@ dependencies:
   mqtt_client: 10.10.0
   mocktail: 1.0.4
   fluro: 2.0.5
-  getwidget: 6.0.0
+  getwidget: 7.0.0
   cached_network_image: 3.4.1
   url_launcher: 6.3.2
   dio: 5.9.0
   shimmer: ^3.0.0
+  clarity_flutter: 1.4.1
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:clarity_flutter/clarity_flutter.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_realtime/startup/di.dart';
@@ -29,5 +30,12 @@ main() async {
   initializeDateFormatting(
     'pt_BR',
     null,
-  ).then((_) => runApp(const App()));
+  ).then(
+    (_) => runApp(
+      ClarityWidget(
+        app: App(),
+        clarityConfig: ClarityConfig(projectId: "SEU_PROJECT_ID"),
+      ),
+    ),
+  );
 }
